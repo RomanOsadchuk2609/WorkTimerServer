@@ -11,4 +11,8 @@ public class TestController {
     public String test() {
         return "It works";
     }
+    @GetMapping("/security")
+    public String test2() {
+        return "Security works!";
+    }
 }
