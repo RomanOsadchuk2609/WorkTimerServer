@@ -44,7 +44,7 @@ public class Task {
 	private String description;
 
 	@JoinColumn(name = "user_id")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private User user;
 
 	@JsonIgnore
