@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service layer for operations with {@link Task} entity
@@ -27,8 +28,8 @@ public class TaskService implements CrudService<Task> {
 	}
 
 	@Override
-	public Task findById(long id) {
-		return taskRepository.findById(id).orElse(null);
+	public Optional<Task> findById(long id) {
+		return taskRepository.findById(id);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service layer for operations with {@link TimeLog} entity
@@ -27,8 +28,8 @@ public class TimeLogService implements CrudService<TimeLog> {
 	}
 
 	@Override
-	public TimeLog findById(long id) {
-		return timeLogRepository.findById(id).orElse(null);
+	public Optional<TimeLog> findById(long id) {
+		return timeLogRepository.findById(id);
 	}
 
 	@Override

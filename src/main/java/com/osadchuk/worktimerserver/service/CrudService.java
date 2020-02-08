@@ -1,6 +1,7 @@
 package com.osadchuk.worktimerserver.service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface with general CRUD operations
@@ -10,7 +11,7 @@ import java.util.List;
 public interface CrudService<T> {
 	List<T> findAll();
 
-	T findById(long id);
+	Optional<T> findById(long id);
 
 	T save(T entity);
 

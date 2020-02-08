@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service layer for operations with {@link Screenshot} entity
@@ -27,8 +28,8 @@ public class ScreenshotService implements CrudService<Screenshot> {
 	}
 
 	@Override
-	public Screenshot findById(long id) {
-		return screenshotRepository.findById(id).orElse(null);
+	public Optional<Screenshot> findById(long id) {
+		return screenshotRepository.findById(id);
 	}
 
 	@Override

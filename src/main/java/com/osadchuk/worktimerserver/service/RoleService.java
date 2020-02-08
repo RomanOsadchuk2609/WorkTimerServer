@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service layer for operations with {@link Role} entity
@@ -27,8 +28,8 @@ public class RoleService implements CrudService<Role> {
 	}
 
 	@Override
-	public Role findById(long id) {
-		return roleRepository.findById(id).orElse(null);
+	public Optional<Role> findById(long id) {
+		return roleRepository.findById(id);
 	}
 
 	@Override
