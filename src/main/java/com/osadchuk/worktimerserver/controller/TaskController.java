@@ -1,6 +1,6 @@
 package com.osadchuk.worktimerserver.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.osadchuk.worktimerserver.model.SimpleTask;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,8 +13,17 @@ import java.util.List;
 @RequestMapping("/api/simple_tasks/by_username")
 public class TaskController {
 
-    @PostMapping
-    public List<Object> tasks(@RequestParam String username) {
-        return Collections.emptyList();
-    }
+	@PostMapping
+	public List<SimpleTask> tasks(@RequestParam String username) {
+		return Collections.singletonList(new SimpleTask(
+				1,
+				"project1",
+				1,
+				"task1",
+				false,
+				0,
+				1,
+				"admin"
+		));
+	}
 }

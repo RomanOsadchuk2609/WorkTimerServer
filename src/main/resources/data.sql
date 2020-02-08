@@ -22,3 +22,7 @@ SELECT 1 as "user_id", 2 as "role_id"
 WHERE NOT EXISTS(
         SELECT user_id FROM public.users_roles WHERE user_id = 1 and role_id = 2
     );
+
+INSERT INTO public.task (id, name, description, user_id)
+VALUES (1, 'Time Logging', 'Default task for time logging of all users', NULL)
+ON CONFLICT DO NOTHING;
