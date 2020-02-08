@@ -35,10 +35,21 @@ public class Role {
 	@Id
 	@GeneratedValue(generator = "roleSequenceGenerator")
 	private long id;
+
 	private String name;
+
 	private String description;
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "roles")
 	private Set<User> users;
+
+	@Override
+	public String toString() {
+		return "Role{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				'}';
+	}
 }

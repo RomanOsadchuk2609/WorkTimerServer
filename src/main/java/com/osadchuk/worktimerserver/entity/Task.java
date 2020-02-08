@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.CascadeType;
@@ -44,12 +45,21 @@ public class Task {
 
 	private String description;
 
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@JoinColumn(name = "user_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
+	@OneToMany(mappedBy = "task")
 	private List<TimeLog> timeLogList;
-	
+
+	@Override
+	public String toString() {
+		return "Task {" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", user=" + user +
+				'}';
+	}
 }

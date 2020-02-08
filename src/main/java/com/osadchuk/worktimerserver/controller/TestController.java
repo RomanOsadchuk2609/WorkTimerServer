@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class TestController {
-    @GetMapping
-    public String test() {
-        return "It works";
-    }
-    @GetMapping("/security")
-    public String test2() {
-        return "Security works!";
-    }
+	@GetMapping
+	public String test() {
+		return "It works";
+	}
+
+	@GetMapping("/security")
+	public String test2() {
+		return "Security works!";
+	}
 }

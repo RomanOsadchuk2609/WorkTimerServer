@@ -41,12 +41,19 @@ public class User {
 	@Id
 	@GeneratedValue(generator = "userSequenceGenerator")
 	private long id;
+
 	private String username;
+
 	private String firstName;
+
 	private String lastName;
+
 	private boolean enabled;
+
 	private String phoneNumber;
+
 	private String password;
+
 	private String token;
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -64,4 +71,19 @@ public class User {
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<TimeLog> timeLogList;
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", username='" + username + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", enabled=" + enabled +
+				", phoneNumber='" + phoneNumber + '\'' +
+				", password='" + password + '\'' +
+				", token='" + token + '\'' +
+				", roles=" + roles +
+				'}';
+	}
 }

@@ -46,14 +46,25 @@ public class TimeLog {
 	private LocalDateTime endTime;
 
 	@JoinColumn(name = "task_id", referencedColumnName = "id")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private Task task;
 
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private User user;
 
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "timeLog")
 	private List<Screenshot> screenshotList;
+
+	@Override
+	public String toString() {
+		return "TimeLog{" +
+				"id=" + id +
+				", startTime=" + startTime +
+				", endTime=" + endTime +
+				", task=" + task +
+				", user=" + user +
+				'}';
+	}
 }

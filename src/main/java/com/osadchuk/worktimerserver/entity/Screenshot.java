@@ -41,7 +41,17 @@ public class Screenshot {
 
 	private LocalDateTime date;
 
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "time_log_id", referencedColumnName = "id")
+	@ManyToOne
 	private TimeLog timeLog;
+
+	@Override
+	public String toString() {
+		return "Screenshot{" +
+				"id=" + id +
+				", base64='" + base64 + '\'' +
+				", date=" + date +
+				", timeLog=" + timeLog +
+				'}';
+	}
 }
