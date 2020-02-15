@@ -1,6 +1,7 @@
 package com.osadchuk.worktimerserver.service;
 
 import com.osadchuk.worktimerserver.entity.TimeLog;
+import com.osadchuk.worktimerserver.model.dto.TimeLogDTO;
 import com.osadchuk.worktimerserver.repository.TimeLogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,22 @@ public class TimeLogService implements CrudService<TimeLog> {
 	@Override
 	public void deleteById(long id) {
 		timeLogRepository.deleteById(id);
+	}
+
+	public TimeLogDTO convertIntoDTO(TimeLog timeLog) {
+		TimeLogDTO timeLogDTO = new TimeLogDTO();
+		timeLogDTO.setId(timeLog.getId());
+		timeLogDTO.setStartTime(timeLog.getStartTime());
+		timeLogDTO.setEndTime(timeLog.getEndTime());
+		long userId = timeLog.getUser() != null
+				? timeLog.getUser().getId()
+				: 0;
+		timeLogDTO.setUserId(userId);
+		long taskId = timeLog.getTask() != null
+				? timeLog.getTask().getId()
+				: 0;
+		timeLogDTO.setTaskId(taskId);
+		return timeLogDTO
+				;
 	}
 }

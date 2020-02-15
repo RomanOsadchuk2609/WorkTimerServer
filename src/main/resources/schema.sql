@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS screenshot
             REFERENCES time_log
             ON DELETE SET NULL,
     date TIMESTAMP COLLATE pg_catalog."default",
-    base64 CHARACTER VARYING(255) COLLATE pg_catalog."default",
+    base64 VARCHAR COLLATE pg_catalog."default",
     CONSTRAINT screenshot_pkey PRIMARY KEY (id)
 );
 
