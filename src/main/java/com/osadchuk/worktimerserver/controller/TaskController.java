@@ -1,6 +1,5 @@
 package com.osadchuk.worktimerserver.controller;
 
-import com.osadchuk.worktimerserver.entity.Task;
 import com.osadchuk.worktimerserver.model.SimpleTask;
 import com.osadchuk.worktimerserver.model.dto.TaskDTO;
 import com.osadchuk.worktimerserver.service.TaskService;

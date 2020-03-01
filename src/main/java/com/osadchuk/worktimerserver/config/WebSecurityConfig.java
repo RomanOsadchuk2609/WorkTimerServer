@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Web Security configuration
@@ -49,10 +50,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 				.authorizeRequests()
-				.antMatchers("/test", "/timer/login").permitAll()
-				.antMatchers("/managers/status/check").hasRole("MANAGER")
+				.antMatchers("/managers/status/check", "/admin/**").hasAuthority("MANAGER")
 				.antMatchers("/users/status/check").hasRole("USER")
+				.antMatchers("/registration", "/public/**", "/css/**", "/js/**", "/img/**", "/test", "/timer/login").permitAll()
 				.anyRequest().authenticated()
+				.and()
+				.formLogin()
+				.usernameParameter("j_username")
+				.passwordParameter("j_password")
+				.loginPage("/login")
+				.defaultSuccessUrl("/home", true)
+				.permitAll()
+				.and()
+				.logout()
+				.invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID")
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/login")
+				.permitAll()
 				.and()
 				.httpBasic()
 				.authenticationEntryPoint(authenticationEntryPoint);
