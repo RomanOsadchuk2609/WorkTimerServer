@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head.html :: head"></head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark-green">
+    <a class="navbar-brand" href="#">Work Timer</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/home">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Users</a>
@@ -23,7 +23,7 @@
                 <a class="nav-link" href="#">Reporting</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
+                <a class="nav-link" href="/profile">Profile</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout">Log Out</a>
@@ -32,8 +32,10 @@
     </div>
 </nav>
 <div class="container">
-    <div class="row" style="padding-top: 50px">
+    <div class="row" style="padding-top: 25px">
         <h1 style="margin: auto">Home</h1>
+        <!--/*@thymesVar id="user" type="com.osadchuk.worktimerserver.model.dto.UserDTO"*/-->
+        <h5 style="margin: auto" th:text="${user}"></h5>
     </div>
 </div>
 </body>

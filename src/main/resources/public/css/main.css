@@ -3,36 +3,11 @@ img {
     height: auto;
 }
 
-.room-info{
-    padding: 10px;
-    margin-bottom: 20px;
-    background-color: #d7ffd9;
-    border-radius: 5px;
+.bg-dark-green {
+    background-color: #346711;
 }
 
-.room-info.reserved{
-    padding: 10px;
-    margin-bottom: 20px;
-    background-color: #ffe7e3;
-    border-radius: 5px;
-}
-
-.created {
-    background-color: #d5ffdf;
-}
-
-.in_process {
-    background-color: lightyellow;
-}
-
-.approved {
-    background-color: #badaf4;
-}
-
-.rejected {
-    background-color: #f0afb1;
-}
-
-.closed {
-    background-color: white;
+.centered-horizontally {
+    margin-left: auto;
+    margin-right: auto;
 }
