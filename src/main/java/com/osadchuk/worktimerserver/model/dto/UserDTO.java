@@ -30,13 +30,15 @@ public class UserDTO {
     @ValidPhoneNumber
     private String phoneNumber;
 
-    @ValidPassword
-    private String password;
+	@ValidPassword
+	private String password;
 
-    private String confirmPassword;
+	private String confirmPassword;
 
-    @ValidNewPassword
-    private String newPassword;
+	@ValidNewPassword
+	private String newPassword;
 
-    private String error;
+	private boolean isAdmin;
+
+	private String error;
 }

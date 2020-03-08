@@ -1,6 +1,5 @@
 package com.osadchuk.worktimerserver.controller;
 
-import com.osadchuk.worktimerserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +17,7 @@ public class HomeController {
 	private final ControllerUtils controllerUtils;
 
 	@Autowired
-	public HomeController(UserService userService, ControllerUtils controllerUtils) {
+	public HomeController(ControllerUtils controllerUtils) {
 		this.controllerUtils = controllerUtils;
 	}
 

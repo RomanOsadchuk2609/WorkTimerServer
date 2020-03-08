@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<div id="foundUsersDiv" th:fragment="foundUsers">
+    <!--/*@thymesVar id="foundUsers" type="List<com.osadchuk.worktimerserver.model.dto.UserDTO>"*/-->
+    <table class="table table-striped" th:if="${foundUsers != null && !foundUsers.isEmpty()}">
+        <thead class="bg-dark-green" style="color: white">
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Admin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="foundUser:${foundUsers}">
+            <td th:text="${foundUser.username}"></td>
+            <td th:text="${foundUser.firstName}"></td>
+            <td th:text="${foundUser.lastName}"></td>
+            <td th:text="${foundUser.phoneNumber}"></td>
+            <td th:text="${foundUser.admin}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${foundUsers == null || foundUsers.isEmpty()}" class="alert alert-danger" role="alert" th:text="'Could not find any user.'"></div>
+</div>

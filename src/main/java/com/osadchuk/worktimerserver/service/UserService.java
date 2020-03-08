@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service layer for operations with {@link User} entity
@@ -54,18 +58,37 @@ public class UserService implements CrudService<User> {
 		return userRepository.findByUsername(username);
 	}
 
+	public List<User> findAllByContainingFilterIgnoreCase(String filter) {
+		List<User> usersByUsername = userRepository.findAllByUsernameContainingIgnoreCase(filter);
+		List<User> usersByFirstName = userRepository.findAllByFirstNameContainingIgnoreCase(filter);
+		List<User> usersByLastName = userRepository.findAllByLastNameContainingIgnoreCase(filter);
+		List<User> usersByPhoneNumber = userRepository.findAllByPhoneNumberContainingIgnoreCase(filter);
+		return Stream.of(usersByUsername, usersByFirstName, usersByLastName, usersByPhoneNumber)
+				.flatMap(Collection::stream)
+				.distinct()
+				.sorted(Comparator.comparing(User::getUsername))
+				.collect(Collectors.toList());
+	}
+
 	public Optional<UserDTO> findByUsernameAsDTO(String username) {
 		Optional<User> optionalUser = userRepository.findByUsername(username);
 		return optionalUser.map(user -> Optional.of(convertIntoDTO(user))).orElse(null);
 	}
 
-	private UserDTO convertIntoDTO(User user) {
+	public UserDTO convertIntoDTO(User user) {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(user.getUsername());
 		userDTO.setFirstName(user.getFirstName());
 		userDTO.setLastName(user.getLastName());
 		userDTO.setPhoneNumber(user.getPhoneNumber());
+		userDTO.setAdmin(user.isAdmin());
 		return userDTO;
+	}
+
+	public List<UserDTO> convertIntoDTO(List<User> users) {
+		return users != null
+				? users.stream().map(this::convertIntoDTO).collect(Collectors.toList())
+				: null;
 	}
 
 	public User update(User user) {

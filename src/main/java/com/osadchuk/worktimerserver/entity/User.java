@@ -1,6 +1,7 @@
 package com.osadchuk.worktimerserver.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.osadchuk.worktimerserver.util.WorkTimerConstants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -72,6 +73,13 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<TimeLog> timeLogList;
 
+	@JsonIgnore
+	public boolean isAdmin() {
+		return roles.stream()
+				.map(Role::getName)
+				.anyMatch(WorkTimerConstants.Role.ADMIN::equalsIgnoreCase);
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -86,4 +94,5 @@ public class User {
 				", roles=" + roles +
 				'}';
 	}
+
 }

@@ -10,10 +10,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/home">Home</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="/users">Users</a>
             </li>
             <li class="nav-item">
@@ -32,11 +32,24 @@
     </div>
 </nav>
 <div class="container">
-    <div class="row" style="padding-top: 25px">
-        <h1 style="margin: auto">Home</h1>
+    <div class="row" style="padding-top: 10px;">
         <!--/*@thymesVar id="user" type="com.osadchuk.worktimerserver.model.dto.UserDTO"*/-->
-        <h5 style="margin: auto" th:text="${user}"></h5>
+<!--                <h5 style="margin: auto" th:text="${user}"></h5>-->
+        <div align="center" class="col-lg-8 centered-horizontally">
+            <h3 style="margin: auto; padding-bottom: 10px;">Users</h3>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Find User</span>
+                </div>
+                <input id="filterInput" type="text" class="form-control" placeholder="Filter" aria-label="Username" aria-describedby="basic-addon1">
+                <div class="input-group-append">
+                    <button id="searchButton" class="btn btn-success" type="button">Search</button>
+                </div>
+            </div>
+            <div id="foundUsersDiv"></div>
+        </div>
     </div>
 </div>
+<script type="text/javascript" th:src="@{/js/users.js}"></script>
 </body>
 </html>

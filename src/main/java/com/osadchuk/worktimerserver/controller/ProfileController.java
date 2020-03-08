@@ -26,7 +26,8 @@ public class ProfileController {
 	private final ControllerUtils controllerUtils;
 
 	@Autowired
-	public ProfileController(UserService userService, ControllerUtils controllerUtils) {
+	public ProfileController(UserService userService,
+	                         ControllerUtils controllerUtils) {
 		this.userService = userService;
 		this.controllerUtils = controllerUtils;
 	}
