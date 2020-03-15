@@ -68,6 +68,10 @@ public class UserService implements CrudService<User> {
 		return userRepository.findByUsername(username);
 	}
 
+	public Optional<User> findByToken(String token) {
+		return userRepository.findByToken(token);
+	}
+
 	public List<User> findAllByContainingFilterIgnoreCase(String filter) {
 		List<User> usersByUsername = userRepository.findAllByUsernameContainingIgnoreCase(filter);
 		List<User> usersByFirstName = userRepository.findAllByFirstNameContainingIgnoreCase(filter);

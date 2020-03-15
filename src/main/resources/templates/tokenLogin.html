@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: head"></head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark-green">
+    <a class="navbar-brand" href="#">Work Timer</a>
+</nav>
+<div class="container">
+    <!--/*@thymesVar id="user" type="com.osadchuk.worktimerserver.model.dto.UserDTO"*/-->
+    <div class="row" style="padding-top: 10px; font-size: 10pt">
+        <div align="center" class="col-lg-6 centered-horizontally">
+            <div th:if="${successMessage}" class="alert alert-success" role="alert"
+                 th:text="${successMessage}"></div>
+
+            <div th:if="${errorMessage}" class="alert alert-danger" role="alert"
+                 th:text="${errorMessage}"></div>
+            <h3 th:if="${userDTO}" th:text="'User Registartion | ' + ${userDTO.username}"></h3>
+            <form th:if="${userDTO}" align="left" action="/login/token" th:object="${userDTO}" th:name="userDTO" method="POST">
+                <fieldset>
+
+                    <input type="text" th:field="*{username}" required="required" hidden="hidden"/>
+                    <input type="text" th:field="*{firstName}" required="required" hidden="hidden"/>
+                    <input type="text" th:field="*{lastName}" required="required" hidden="hidden"/>
+                    <input type="text" th:field="*{phoneNumber}" required="required" hidden="hidden"/>
+                    <input type="text" th:field="*{token}" required="required" hidden="hidden"/>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" type="password" class="form-control input-lg" th:field="*{password}"
+                               placeholder="Password"/>
+                        <p th:each="error: ${#fields.errors('password')}"
+                           th:text="${error}">Validation error</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm new password</label>
+                        <input id="confirmPassword" type="password" class="form-control input-lg"
+                               th:field="*{confirmPassword}"
+                               placeholder="Confirm password"/>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Register"/>
+                    </div>
+                </fieldset>
+            </form>
+            <a th:if="${successMessage}" href="/login" class="btn btn-lg btn-outline-success btn-block">Login</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

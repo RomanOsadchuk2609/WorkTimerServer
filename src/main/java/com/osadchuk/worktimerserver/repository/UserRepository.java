@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByPhoneNumber(String phoneNumber);
 
+	Optional<User> findByToken(String token);
+
 	List<User> findAllByUsernameContainingIgnoreCase(String username);
 
 	List<User> findAllByFirstNameContainingIgnoreCase(String username);
