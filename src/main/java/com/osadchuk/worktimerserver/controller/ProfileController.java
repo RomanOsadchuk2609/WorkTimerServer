@@ -42,9 +42,7 @@ public class ProfileController {
 	public String updateProfile(@AuthenticationPrincipal UserDetails userDetails,
 	                            Model model,
 	                            @ModelAttribute("user") @Valid UserDTO userDTO,
-	                            BindingResult result,
-	                            WebRequest request,
-	                            Errors errors) {
+	                            BindingResult result) {
 		if (!result.hasErrors()) {
 			userDTO = userService.update(userDTO);
 			if (Strings.isNotBlank(userDTO.getError())) {

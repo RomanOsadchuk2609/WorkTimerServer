@@ -40,5 +40,7 @@ public class UserDTO {
 
 	private boolean isAdmin;
 
+	private String token;
+
 	private String error;
 }

@@ -11,6 +11,7 @@
             <th scope="col">Last name</th>
             <th scope="col">Phone</th>
             <th scope="col">Admin</th>
+            <th scope="col">Token</th>
         </tr>
         </thead>
         <tbody>
@@ -20,8 +21,62 @@
             <td th:text="${foundUser.lastName}"></td>
             <td th:text="${foundUser.phoneNumber}"></td>
             <td th:text="${foundUser.admin}"></td>
+            <td th:text="${foundUser.token}"></td>
         </tr>
         </tbody>
     </table>
     <div th:if="${foundUsers == null || foundUsers.isEmpty()}" class="alert alert-danger" role="alert" th:text="'Could not find any user.'"></div>
+</div>
+
+<div id="addUserDiv" th:fragment="addUser">
+    <!--/*@thymesVar id="user" type="com.osadchuk.worktimerserver.model.NewUser"*/-->
+    <h3 th:text="'Add User'"></h3>
+    <form align="left" action="/users/add" th:object="${newUser}" th:name="newUser" method="POST">
+        <fieldset>
+            <div th:if="${successMessage}" class="alert alert-success" role="alert"
+                 th:text="${successMessage}"></div>
+
+            <div th:if="${errorMessage}" class="alert alert-danger" role="alert"
+                 th:text="${errorMessage}"></div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" type="text" class="form-control input-lg" th:field="*{username}"
+                       placeholder="username" required="required"/>
+                <p th:each="error: ${#fields.errors('username')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input id="firstName" type="text" class="form-control input-lg" th:field="*{firstName}"
+                       placeholder="First Name" required="required"/>
+                <p th:each="error: ${#fields.errors('firstName')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input id="lastName" type="text" class="form-control input-lg" th:field="*{lastName}"
+                       placeholder="Last Name" required="required"/>
+                <p th:each="error: ${#fields.errors('lastName')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input id="phoneNumber" type="text" class="form-control input-lg" th:field="*{phoneNumber}"
+                       placeholder="Phone Number" required="required"/>
+                <p th:each="error: ${#fields.errors('phoneNumber')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="form-check">
+                <input id="isAdmin" type="checkbox" class="form-check-input" th:field="*{admin}"/>
+                <label class="form-check-label" for="isAdmin">Is Admin</label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-lg btn-success btn-block" value="Add"/>
+                <input type="reset" class="btn btn-lg btn-outline-secondary btn-block" value="Cancel"/>
+            </div>
+        </fieldset>
+    </form>
 </div>

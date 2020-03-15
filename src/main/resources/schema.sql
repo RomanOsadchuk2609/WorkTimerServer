@@ -2,12 +2,12 @@ CREATE TABLE IF NOT EXISTS public."user"
 (
     id           BIGINT  NOT NULL,
     enabled      BOOLEAN NOT NULL,
-    first_name   CHARACTER VARYING(255) COLLATE pg_catalog."default",
-    last_name    CHARACTER VARYING(255) COLLATE pg_catalog."default",
-    password     CHARACTER VARYING(255) COLLATE pg_catalog."default",
-    phone_number CHARACTER VARYING(255) COLLATE pg_catalog."default",
-    username     CHARACTER VARYING(255) COLLATE pg_catalog."default",
-    token        CHARACTER VARYING(255) COLLATE pg_catalog."default",
+    first_name   CHARACTER VARYING(255),
+    last_name    CHARACTER VARYING(255),
+    password     CHARACTER VARYING(255),
+    phone_number CHARACTER VARYING(255),
+    username     CHARACTER VARYING(255),
+    token        CHARACTER VARYING(255),
     CONSTRAINT user_pkey PRIMARY KEY (id)
 )
     WITH (
@@ -24,8 +24,8 @@ ALTER SEQUENCE user_sequence OWNER TO worktimer;
 CREATE TABLE IF NOT EXISTS public.role
 (
     id          BIGINT NOT NULL,
-    description CHARACTER VARYING(255) COLLATE pg_catalog."default",
-    name        CHARACTER VARYING(255) COLLATE pg_catalog."default",
+    description CHARACTER VARYING(255),
+    name        CHARACTER VARYING(255),
     CONSTRAINT role_pkey PRIMARY KEY (id)
 )
     WITH (
@@ -61,9 +61,9 @@ ALTER SEQUENCE users_roles_sequence OWNER TO worktimer;
 CREATE TABLE IF NOT EXISTS task
 (
     id          BIGINT NOT NULL,
-    name        CHARACTER VARYING(255) COLLATE pg_catalog."default",
-    description CHARACTER VARYING(255) COLLATE pg_catalog."default",
-    user_id BIGINT
+    name        CHARACTER VARYING(255),
+    description CHARACTER VARYING(255),
+    user_id     BIGINT
         CONSTRAINT task_user___fk
             REFERENCES "user"
             ON DELETE SET NULL,
@@ -79,14 +79,14 @@ ALTER SEQUENCE task_sequence OWNER TO worktimer;
 
 CREATE TABLE IF NOT EXISTS time_log
 (
-    id          BIGINT NOT NULL,
-    start_time TIMESTAMP COLLATE pg_catalog."default",
-    end_time TIMESTAMP COLLATE pg_catalog."default",
-    task_id BIGINT
+    id         BIGINT NOT NULL,
+    start_time TIMESTAMP,
+    end_time   TIMESTAMP,
+    task_id    BIGINT
         CONSTRAINT time_log_task___fk
             REFERENCES task
             ON DELETE SET NULL,
-    user_id BIGINT
+    user_id    BIGINT
         CONSTRAINT time_log_user___fk
             REFERENCES "user"
             ON DELETE SET NULL,
@@ -102,13 +102,13 @@ ALTER SEQUENCE time_log_sequence OWNER TO worktimer;
 
 CREATE TABLE IF NOT EXISTS screenshot
 (
-    id     BIGINT NOT NULL,
+    id          BIGINT NOT NULL,
     time_log_id BIGINT
         CONSTRAINT screenshot_time_log___fk
             REFERENCES time_log
             ON DELETE SET NULL,
-    date TIMESTAMP COLLATE pg_catalog."default",
-    base64 VARCHAR COLLATE pg_catalog."default",
+    date        TIMESTAMP,
+    base64      VARCHAR,
     CONSTRAINT screenshot_pkey PRIMARY KEY (id)
 );
 

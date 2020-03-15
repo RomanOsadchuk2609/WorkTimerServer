@@ -1,8 +1,11 @@
 package com.osadchuk.worktimerserver.service;
 
 import com.osadchuk.worktimerserver.entity.User;
+import com.osadchuk.worktimerserver.model.NewUser;
 import com.osadchuk.worktimerserver.model.dto.UserDTO;
+import com.osadchuk.worktimerserver.repository.RoleRepository;
 import com.osadchuk.worktimerserver.repository.UserRepository;
+import com.osadchuk.worktimerserver.util.PasswordGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +14,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.osadchuk.worktimerserver.util.WorkTimerConstants.Role.ADMIN;
+import static com.osadchuk.worktimerserver.util.WorkTimerConstants.Role.USER;
 
 /**
  * Service layer for operations with {@link User} entity
@@ -24,9 +31,12 @@ import java.util.stream.Stream;
 public class UserService implements CrudService<User> {
 	private final UserRepository userRepository;
 
+	private final RoleRepository roleRepository;
+
 	@Autowired
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, RoleRepository roleRepository) {
 		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
 	}
 
 	@Override
@@ -82,6 +92,7 @@ public class UserService implements CrudService<User> {
 		userDTO.setLastName(user.getLastName());
 		userDTO.setPhoneNumber(user.getPhoneNumber());
 		userDTO.setAdmin(user.isAdmin());
+		userDTO.setToken(user.getToken());
 		return userDTO;
 	}
 
@@ -128,5 +139,35 @@ public class UserService implements CrudService<User> {
 			userDTO.setError("Incorrect password!");
 			return userDTO;
 		}
+	}
+
+	public NewUser addUser(NewUser newUser) {
+		StringBuilder errorMessageBuilder = new StringBuilder();
+		if (userRepository.findByUsername(newUser.getUsername()).isPresent()) {
+			errorMessageBuilder.append("User with username: ")
+					.append(newUser.getUsername())
+					.append(" already exists. ");
+		}
+		if (userRepository.findByPhoneNumber(newUser.getPhoneNumber()).isPresent()) {
+			errorMessageBuilder.append("User with phone number: ")
+					.append(newUser.getPhoneNumber())
+					.append(" already exists. ");
+		}
+		if (Strings.isBlank(errorMessageBuilder.toString())) {
+			User user = new User();
+			user.setUsername(newUser.getUsername());
+			user.setFirstName(newUser.getFirstName());
+			user.setLastName(newUser.getLastName());
+			user.setPhoneNumber(newUser.getPhoneNumber());
+			user.setRoles(new HashSet<>());
+			user.getRoles().add(roleRepository.findByName(USER));
+			if (newUser.isAdmin()) {
+				user.getRoles().add(roleRepository.findByName(ADMIN));
+			}
+			user.setToken(PasswordGenerator.generatePassword(8));
+			user = userRepository.save(user);
+			newUser.setToken(user.getToken());
+		}
+		return newUser;
 	}
 }

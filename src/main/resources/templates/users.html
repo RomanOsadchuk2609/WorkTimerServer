@@ -43,10 +43,13 @@
                 </div>
                 <input id="filterInput" type="text" class="form-control" placeholder="Filter" aria-label="Username" aria-describedby="basic-addon1">
                 <div class="input-group-append">
-                    <button id="searchButton" class="btn btn-success" type="button">Search</button>
+                    <button id="searchButton" class="btn btn-outline-success" type="button">Search</button>
                 </div>
             </div>
             <div id="foundUsersDiv"></div>
+        </div>
+        <div align="center" class="col-lg-4 centered-horizontally">
+            <div id="addUserDiv" th:replace="fragments/usersFragments :: addUser"></div>
         </div>
     </div>
 </div>
