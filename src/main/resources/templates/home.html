@@ -33,9 +33,32 @@
 </nav>
 <div class="container">
     <div class="row" style="padding-top: 25px">
-        <h1 style="margin: auto">Home</h1>
-        <!--/*@thymesVar id="user" type="com.osadchuk.worktimerserver.model.dto.UserDTO"*/-->
-        <h5 style="margin: auto" th:text="${user}"></h5>
+        <form action="/home/timeByDate" method="get" style="margin: auto">
+            <label for="startTime">From:</label>
+            <input id="startTime" name="startTime" th:value="${startTime}" type="date"/>
+            <label>To:</label>
+            <input id="endTime" name="endTime" th:value="${endTime}" type="date"/>
+            <input class="btn btn-success" type="submit" value="Calculate"/>
+        </form>
+    </div>
+    <div class="row">
+        <!--/*@thymesVar id="usersTime" type="List<com.osadchuk.worktimerserver.model.UserTime>"*/-->
+        <div class="alert alert-danger" role="alert" style="margin: auto" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+        <table class="table table-striped" th:if="${usersTime != null && !usersTime.isEmpty()}">
+            <thead class="bg-dark-green" style="color: white">
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Full name</th>
+                <th scope="col">Logged time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="userTime : ${usersTime}">
+                <td th:text="${userTime.username}"></td>
+                <td th:text="${userTime.fullName}"></td>
+                <td th:text="${userTime.getFormattedLoggedTime()}"></td>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>

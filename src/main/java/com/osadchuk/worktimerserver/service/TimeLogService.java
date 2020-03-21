@@ -1,12 +1,15 @@
 package com.osadchuk.worktimerserver.service;
 
 import com.osadchuk.worktimerserver.entity.TimeLog;
+import com.osadchuk.worktimerserver.model.UserTime;
 import com.osadchuk.worktimerserver.model.dto.TimeLogDTO;
 import com.osadchuk.worktimerserver.repository.TimeLogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +49,22 @@ public class TimeLogService implements CrudService<TimeLog> {
 	@Override
 	public void deleteById(long id) {
 		timeLogRepository.deleteById(id);
+	}
+
+	public List<UserTime> getUsersLoggedTime(LocalDateTime startTime, LocalDateTime endTime) {
+		List<UserTime> usersTime = timeLogRepository.findUserTimeBetweenDates(startTime, endTime);
+		List<UserTime> transformedUserTime = new ArrayList<>();
+		for (UserTime userTime : usersTime) {
+			Optional<UserTime> optionalUser = transformedUserTime.stream()
+					.filter(ut -> ut.getUserId() == userTime.getUserId())
+					.findFirst();
+			if (optionalUser.isPresent()) {
+				optionalUser.get().setLoggedSeconds(optionalUser.get().getLoggedSeconds() + userTime.getLoggedSeconds());
+			} else {
+				transformedUserTime.add(userTime);
+			}
+		}
+		return transformedUserTime;
 	}
 
 	public TimeLogDTO convertIntoDTO(TimeLog timeLog) {
