@@ -1,5 +1,6 @@
-package com.osadchuk.worktimerserver.controller;
+package com.osadchuk.worktimerserver.controller.web;
 
+import com.osadchuk.worktimerserver.controller.util.ControllerUtil;
 import com.osadchuk.worktimerserver.entity.User;
 import com.osadchuk.worktimerserver.model.NewUser;
 import com.osadchuk.worktimerserver.service.UserService;
@@ -30,20 +31,20 @@ import java.util.List;
 @Slf4j
 public class UsersController {
 
-	private final ControllerUtils controllerUtils;
+	private final ControllerUtil controllerUtil;
 
 	private final UserService userService;
 
 	@Autowired
 	public UsersController(UserService userService,
-	                       ControllerUtils controllerUtils) {
-		this.controllerUtils = controllerUtils;
+	                       ControllerUtil controllerUtil) {
+		this.controllerUtil = controllerUtil;
 		this.userService = userService;
 	}
 
 	@GetMapping
 	public String users(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-		controllerUtils.fillModelWithUser(userDetails, model);
+		controllerUtil.fillModelWithUser(userDetails, model);
 		model.addAttribute("foundUsers", Collections.emptyList());
 		model.addAttribute("newUser", new NewUser());
 		return "users";
@@ -53,7 +54,7 @@ public class UsersController {
 	public String findUsers(@AuthenticationPrincipal UserDetails userDetails,
 	                        @RequestParam String filter,
 	                        Model model) {
-		controllerUtils.fillModelWithUser(userDetails, model);
+		controllerUtil.fillModelWithUser(userDetails, model);
 		if (!StringUtils.isEmptyOrWhitespace(filter)) {
 			List<User> foundUsers = userService.findAllByContainingFilterIgnoreCase(filter);
 			model.addAttribute("foundUsers", userService.convertIntoDTO(foundUsers));
@@ -66,7 +67,7 @@ public class UsersController {
 	                      Model model,
 	                      @ModelAttribute @Valid NewUser newUser,
 	                      BindingResult result) {
-		controllerUtils.fillModelWithUser(userDetails, model);
+		controllerUtil.fillModelWithUser(userDetails, model);
 		model.addAttribute("foundUsers", Collections.emptyList());
 		model.addAttribute("newUser", newUser);
 		if (!result.hasErrors()) {

@@ -1,5 +1,6 @@
-package com.osadchuk.worktimerserver.controller;
+package com.osadchuk.worktimerserver.controller.web;
 
+import com.osadchuk.worktimerserver.controller.util.ControllerUtil;
 import com.osadchuk.worktimerserver.model.dto.UserDTO;
 import com.osadchuk.worktimerserver.service.UserService;
 import org.apache.logging.log4j.util.Strings;
@@ -9,12 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
 
@@ -23,18 +22,18 @@ import javax.validation.Valid;
 public class ProfileController {
 	private final UserService userService;
 
-	private final ControllerUtils controllerUtils;
+	private final ControllerUtil controllerUtil;
 
 	@Autowired
 	public ProfileController(UserService userService,
-	                         ControllerUtils controllerUtils) {
+	                         ControllerUtil controllerUtil) {
 		this.userService = userService;
-		this.controllerUtils = controllerUtils;
+		this.controllerUtil = controllerUtil;
 	}
 
 	@GetMapping
 	public String getProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-		controllerUtils.fillModelWithUser(userDetails, model);
+		controllerUtil.fillModelWithUser(userDetails, model);
 		return "profile";
 	}
 

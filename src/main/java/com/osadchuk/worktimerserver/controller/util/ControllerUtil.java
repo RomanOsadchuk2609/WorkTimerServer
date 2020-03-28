@@ -1,4 +1,4 @@
-package com.osadchuk.worktimerserver.controller;
+package com.osadchuk.worktimerserver.controller.util;
 
 import com.osadchuk.worktimerserver.model.dto.UserDTO;
 import com.osadchuk.worktimerserver.service.UserService;
@@ -11,11 +11,11 @@ import org.springframework.ui.Model;
 import java.util.Optional;
 
 @Component
-public class ControllerUtils {
+public class ControllerUtil {
 	private final UserService userService;
 
 	@Autowired
-	public ControllerUtils(UserService userService) {
+	public ControllerUtil(UserService userService) {
 		this.userService = userService;
 	}
 

@@ -1,4 +1,4 @@
-package com.osadchuk.worktimerserver.controller;
+package com.osadchuk.worktimerserver.controller.rest;
 
 import com.osadchuk.worktimerserver.service.ScreenshotService;
 import org.springframework.beans.factory.annotation.Autowired;

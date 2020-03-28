@@ -1,4 +1,4 @@
-package com.osadchuk.worktimerserver.controller;
+package com.osadchuk.worktimerserver.controller.rest;
 
 import com.osadchuk.worktimerserver.entity.Screenshot;
 import com.osadchuk.worktimerserver.entity.Task;

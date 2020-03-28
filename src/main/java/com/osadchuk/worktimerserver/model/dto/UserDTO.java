@@ -18,17 +18,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDTO {
-    @ValidUsername
-    private String username;
+	@ValidUsername
+	private String username;
 
-    @ValidName
-    private String firstName;
+	@ValidName
+	private String firstName;
 
-    @ValidName
-    private String lastName;
+	@ValidName
+	private String lastName;
 
-    @ValidPhoneNumber
-    private String phoneNumber;
+	@ValidPhoneNumber
+	private String phoneNumber;
 
 	@ValidPassword
 	private String password;

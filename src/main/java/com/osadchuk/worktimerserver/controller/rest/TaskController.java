@@ -1,4 +1,4 @@
-package com.osadchuk.worktimerserver.controller;
+package com.osadchuk.worktimerserver.controller.rest;
 
 import com.osadchuk.worktimerserver.model.SimpleTask;
 import com.osadchuk.worktimerserver.model.dto.TaskDTO;

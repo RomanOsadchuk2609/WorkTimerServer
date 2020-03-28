@@ -1,5 +1,6 @@
-package com.osadchuk.worktimerserver.controller;
+package com.osadchuk.worktimerserver.controller.web;
 
+import com.osadchuk.worktimerserver.controller.util.ControllerUtil;
 import com.osadchuk.worktimerserver.model.UserTime;
 import com.osadchuk.worktimerserver.service.TimeLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,14 @@ public class HomeController {
 
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-	private final ControllerUtils controllerUtils;
+	private final ControllerUtil controllerUtil;
 
 	private final TimeLogService timeLogService;
 
 	@Autowired
-	public HomeController(ControllerUtils controllerUtils,
+	public HomeController(ControllerUtil controllerUtil,
 	                      TimeLogService timeLogService) {
-		this.controllerUtils = controllerUtils;
+		this.controllerUtil = controllerUtil;
 		this.timeLogService = timeLogService;
 	}
 
@@ -44,10 +45,9 @@ public class HomeController {
 
 	@GetMapping("/home")
 	public String home(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-		controllerUtils.fillModelWithUser(userDetails, model);
-		LocalDateTime endDateTime = LocalDateTime.now();
-		LocalDateTime startDateTime = endDateTime.minusDays(1);
-		fillModelWithLoggedTime(startDateTime, endDateTime, model);
+		controllerUtil.fillModelWithUser(userDetails, model);
+		LocalDate now = LocalDate.now();
+		fillModelWithLoggedTime(now, now, model);
 		return "home";
 	}
 
@@ -56,14 +56,16 @@ public class HomeController {
 	                         @RequestParam @Valid String startTime,
 	                         @RequestParam @Valid String endTime,
 	                         Model model) {
-		controllerUtils.fillModelWithUser(userDetails, model);
-		LocalDateTime startDateTime = LocalDateTime.of(LocalDate.parse(startTime, DATE_TIME_FORMATTER), LocalTime.MIN);
-		LocalDateTime endDateTime = LocalDateTime.of(LocalDate.parse(endTime, DATE_TIME_FORMATTER), LocalTime.MIN);
-		fillModelWithLoggedTime(startDateTime, endDateTime, model);
+		controllerUtil.fillModelWithUser(userDetails, model);
+		LocalDate startDate = LocalDate.parse(startTime, DATE_TIME_FORMATTER);
+		LocalDate endDate = LocalDate.parse(endTime, DATE_TIME_FORMATTER);
+		fillModelWithLoggedTime(startDate, endDate, model);
 		return "home";
 	}
 
-	private void fillModelWithLoggedTime(LocalDateTime startDateTime, LocalDateTime endDateTime, Model model) {
+	private void fillModelWithLoggedTime(LocalDate startDate, LocalDate endDate, Model model) {
+		LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+		LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
 		List<UserTime> usersTime = timeLogService.getUsersLoggedTime(startDateTime, endDateTime);
 		model.addAttribute("startTime", DATE_TIME_FORMATTER.format(startDateTime));
 		model.addAttribute("endTime", DATE_TIME_FORMATTER.format(endDateTime));

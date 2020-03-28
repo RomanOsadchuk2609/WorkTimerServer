@@ -1,4 +1,4 @@
-package com.osadchuk.worktimerserver.controller;
+package com.osadchuk.worktimerserver.controller.web;
 
 import com.osadchuk.worktimerserver.entity.User;
 import com.osadchuk.worktimerserver.model.dto.UserDTO;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
 
 import javax.validation.Valid;
 import java.util.Optional;

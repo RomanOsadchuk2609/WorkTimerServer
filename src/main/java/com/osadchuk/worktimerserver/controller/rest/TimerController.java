@@ -1,4 +1,4 @@
-package com.osadchuk.worktimerserver.controller;
+package com.osadchuk.worktimerserver.controller.rest;
 
 import com.osadchuk.worktimerserver.model.Timer;
 import lombok.extern.slf4j.Slf4j;
