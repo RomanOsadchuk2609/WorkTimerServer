@@ -35,16 +35,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/time_log")
 @Slf4j
-public class TimeLodController {
+public class TimeLodRestController {
 	private final UserService userService;
 	private final TaskService taskService;
 	private final TimeLogService timeLogService;
 	private final ScreenshotService screenshotService;
 
-	public TimeLodController(UserService userService,
-	                         TaskService taskService,
-	                         TimeLogService timeLogService,
-	                         ScreenshotService screenshotService) {
+	public TimeLodRestController(UserService userService,
+	                             TaskService taskService,
+	                             TimeLogService timeLogService,
+	                             ScreenshotService screenshotService) {
 		this.userService = userService;
 		this.taskService = taskService;
 		this.timeLogService = timeLogService;

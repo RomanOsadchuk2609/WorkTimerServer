@@ -26,7 +26,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/timer")
 @Slf4j
-public class TimerController {
+public class TimerRestController {
 
 	private static long start = 0;
 
@@ -59,7 +59,7 @@ public class TimerController {
 	                            @RequestParam(value = "starttime") long starttime) {
 		Timer timer = new Timer();
 		timer.setPerformerId(performerId);
-		TimerController.start = starttime;
+		TimerRestController.start = starttime;
 		Date start = new Date();
 		start.setTime(starttime);
 		timer.setStarttime(start);
@@ -73,7 +73,7 @@ public class TimerController {
 	                      @RequestParam(value = "endtime") long endtime) {
 		Timer timer = new Timer();
 		Date start = new Date();
-		start.setTime(TimerController.start);
+		start.setTime(TimerRestController.start);
 		timer.setStarttime(start);
 		Date end = new Date();
 		end.setTime(endtime);

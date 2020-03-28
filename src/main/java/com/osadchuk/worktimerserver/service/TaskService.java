@@ -9,21 +9,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Service layer for operations with {@link Task} entity
  */
 @Service
 @Slf4j
-public class TaskService implements CrudService<Task> {
+public class TaskService implements CrudService<Task>, DataTransferObjectService<Task, TaskDTO> {
+	
 	private final TaskRepository taskRepository;
-
+	
 	@Autowired
 	public TaskService(TaskRepository taskRepository) {
 		this.taskRepository = taskRepository;
 	}
-
+	
 	@Override
 	public List<Task> findAll() {
 		return taskRepository.findAll();
@@ -38,31 +38,18 @@ public class TaskService implements CrudService<Task> {
 	public Task save(Task entity) {
 		return taskRepository.save(entity);
 	}
-
+	
 	@Override
 	public void delete(Task entity) {
 		taskRepository.delete(entity);
 	}
-
+	
 	@Override
 	public void deleteById(long id) {
 		taskRepository.deleteById(id);
 	}
-
-	public Optional<Task> findByUsername(String username) {
-		return taskRepository.findByUserUsername(username);
-	}
-
-	public List<Task> findAllByUsername(String username) {
-		List<Task> tasks = taskRepository.findAllByUserUsername(username);
-		tasks.addAll(taskRepository.findAllByUserIsNull());
-		return tasks;
-	}
-
-	public List<TaskDTO> findAllAsDTOByUsername(String username) {
-		return convertIntoDTO(findAllByUsername(username));
-	}
-
+	
+	@Override
 	public TaskDTO convertIntoDTO(Task task) {
 		return new TaskDTO(
 				task.getId(),
@@ -71,10 +58,18 @@ public class TaskService implements CrudService<Task> {
 				task.getUser() != null ? task.getUser().getId() : 0
 		);
 	}
-
-	public List<TaskDTO> convertIntoDTO(List<Task> taskList) {
-		return taskList.stream()
-				.map(this::convertIntoDTO)
-				.collect(Collectors.toList());
+	
+	public Optional<Task> findByUsername(String username) {
+		return taskRepository.findByUserUsername(username);
+	}
+	
+	public List<Task> findAllByUsername(String username) {
+		List<Task> tasks = taskRepository.findAllByUserUsername(username);
+		tasks.addAll(taskRepository.findAllByUserIsNull());
+		return tasks;
+	}
+	
+	public List<TaskDTO> findAllAsDTOByUsername(String username) {
+		return convertIntoDTO(findAllByUsername(username));
 	}
 }

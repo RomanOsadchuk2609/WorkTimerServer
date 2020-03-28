@@ -16,19 +16,19 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static com.osadchuk.worktimerserver.util.WorkTimerConstants.DATE_FORMATTER;
+import static com.osadchuk.worktimerserver.util.WorkTimerConstants.DATE_TIME_FORMATTER;
 
 /**
  * Controller for home page
  */
 @Controller
 public class HomeController {
-
-	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
+	
 	private final ControllerUtil controllerUtil;
-
+	
 	private final TimeLogService timeLogService;
 
 	@Autowired
@@ -57,8 +57,8 @@ public class HomeController {
 	                         @RequestParam @Valid String endTime,
 	                         Model model) {
 		controllerUtil.fillModelWithUser(userDetails, model);
-		LocalDate startDate = LocalDate.parse(startTime, DATE_TIME_FORMATTER);
-		LocalDate endDate = LocalDate.parse(endTime, DATE_TIME_FORMATTER);
+		LocalDate startDate = LocalDate.parse(startTime, DATE_FORMATTER);
+		LocalDate endDate = LocalDate.parse(endTime, DATE_FORMATTER);
 		fillModelWithLoggedTime(startDate, endDate, model);
 		return "home";
 	}
@@ -67,8 +67,8 @@ public class HomeController {
 		LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
 		LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
 		List<UserTime> usersTime = timeLogService.getUsersLoggedTime(startDateTime, endDateTime);
-		model.addAttribute("startTime", DATE_TIME_FORMATTER.format(startDateTime));
-		model.addAttribute("endTime", DATE_TIME_FORMATTER.format(endDateTime));
+		model.addAttribute("startTime", DATE_FORMATTER.format(startDateTime));
+		model.addAttribute("endTime", DATE_FORMATTER.format(endDateTime));
 		if (!usersTime.isEmpty()) {
 			model.addAttribute("usersTime", usersTime);
 		} else {

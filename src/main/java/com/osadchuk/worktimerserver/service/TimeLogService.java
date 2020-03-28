@@ -18,14 +18,15 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
-public class TimeLogService implements CrudService<TimeLog> {
+public class TimeLogService implements CrudService<TimeLog>, DataTransferObjectService<TimeLog, TimeLogDTO> {
+	
 	private final TimeLogRepository timeLogRepository;
-
+	
 	@Autowired
 	public TimeLogService(TimeLogRepository timeLogRepository) {
 		this.timeLogRepository = timeLogRepository;
 	}
-
+	
 	@Override
 	public List<TimeLog> findAll() {
 		return timeLogRepository.findAll();
@@ -40,33 +41,18 @@ public class TimeLogService implements CrudService<TimeLog> {
 	public TimeLog save(TimeLog entity) {
 		return timeLogRepository.save(entity);
 	}
-
+	
 	@Override
 	public void delete(TimeLog entity) {
 		timeLogRepository.delete(entity);
 	}
-
+	
 	@Override
 	public void deleteById(long id) {
 		timeLogRepository.deleteById(id);
 	}
-
-	public List<UserTime> getUsersLoggedTime(LocalDateTime startTime, LocalDateTime endTime) {
-		List<UserTime> usersTime = timeLogRepository.findUserTimeBetweenDates(startTime, endTime);
-		List<UserTime> transformedUserTime = new ArrayList<>();
-		for (UserTime userTime : usersTime) {
-			Optional<UserTime> optionalUser = transformedUserTime.stream()
-					.filter(ut -> ut.getUserId() == userTime.getUserId())
-					.findFirst();
-			if (optionalUser.isPresent()) {
-				optionalUser.get().setLoggedSeconds(optionalUser.get().getLoggedSeconds() + userTime.getLoggedSeconds());
-			} else {
-				transformedUserTime.add(userTime);
-			}
-		}
-		return transformedUserTime;
-	}
-
+	
+	@Override
 	public TimeLogDTO convertIntoDTO(TimeLog timeLog) {
 		TimeLogDTO timeLogDTO = new TimeLogDTO();
 		timeLogDTO.setId(timeLog.getId());
@@ -82,5 +68,21 @@ public class TimeLogService implements CrudService<TimeLog> {
 		timeLogDTO.setTaskId(taskId);
 		return timeLogDTO
 				;
+	}
+	
+	public List<UserTime> getUsersLoggedTime(LocalDateTime startTime, LocalDateTime endTime) {
+		List<UserTime> usersTime = timeLogRepository.findUserTimeBetweenDates(startTime, endTime);
+		List<UserTime> transformedUserTime = new ArrayList<>();
+		for (UserTime userTime : usersTime) {
+			Optional<UserTime> optionalUser = transformedUserTime.stream()
+					.filter(ut -> ut.getUserId() == userTime.getUserId())
+					.findFirst();
+			if (optionalUser.isPresent()) {
+				optionalUser.get().setLoggedSeconds(optionalUser.get().getLoggedSeconds() + userTime.getLoggedSeconds());
+			} else {
+				transformedUserTime.add(userTime);
+			}
+		}
+		return transformedUserTime;
 	}
 }

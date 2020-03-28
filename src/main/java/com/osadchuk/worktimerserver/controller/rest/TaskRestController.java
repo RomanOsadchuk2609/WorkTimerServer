@@ -16,13 +16,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/simple_tasks")
-public class TaskController {
+public class TaskRestController {
 	private final TaskService taskService;
 
 	private final UserService userService;
 
 	@Autowired
-	public TaskController(TaskService taskService, UserService userService) {
+	public TaskRestController(TaskService taskService, UserService userService) {
 		this.taskService = taskService;
 		this.userService = userService;
 	}

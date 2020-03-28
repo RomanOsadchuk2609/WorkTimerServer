@@ -28,11 +28,12 @@ import static com.osadchuk.worktimerserver.util.WorkTimerConstants.Role.USER;
  */
 @Service
 @Slf4j
-public class UserService implements CrudService<User> {
+public class UserService implements CrudService<User>, DataTransferObjectService<User, UserDTO> {
+	
 	private final UserRepository userRepository;
-
+	
 	private final RoleRepository roleRepository;
-
+	
 	@Autowired
 	public UserService(UserRepository userRepository, RoleRepository roleRepository) {
 		this.userRepository = userRepository;
@@ -53,25 +54,37 @@ public class UserService implements CrudService<User> {
 	public User save(User entity) {
 		return userRepository.save(entity);
 	}
-
+	
 	@Override
 	public void delete(User entity) {
 		userRepository.delete(entity);
 	}
-
+	
 	@Override
 	public void deleteById(long id) {
 		userRepository.deleteById(id);
 	}
-
+	
+	@Override
+	public UserDTO convertIntoDTO(User user) {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername(user.getUsername());
+		userDTO.setFirstName(user.getFirstName());
+		userDTO.setLastName(user.getLastName());
+		userDTO.setPhoneNumber(user.getPhoneNumber());
+		userDTO.setAdmin(user.isAdmin());
+		userDTO.setToken(user.getToken());
+		return userDTO;
+	}
+	
 	public Optional<User> findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
-
+	
 	public Optional<User> findByToken(String token) {
 		return userRepository.findByToken(token);
 	}
-
+	
 	public List<User> findAllByContainingFilterIgnoreCase(String filter) {
 		List<User> usersByUsername = userRepository.findAllByUsernameContainingIgnoreCase(filter);
 		List<User> usersByFirstName = userRepository.findAllByFirstNameContainingIgnoreCase(filter);
@@ -87,23 +100,6 @@ public class UserService implements CrudService<User> {
 	public Optional<UserDTO> findByUsernameAsDTO(String username) {
 		Optional<User> optionalUser = userRepository.findByUsername(username);
 		return optionalUser.map(user -> Optional.of(convertIntoDTO(user))).orElse(null);
-	}
-
-	public UserDTO convertIntoDTO(User user) {
-		UserDTO userDTO = new UserDTO();
-		userDTO.setUsername(user.getUsername());
-		userDTO.setFirstName(user.getFirstName());
-		userDTO.setLastName(user.getLastName());
-		userDTO.setPhoneNumber(user.getPhoneNumber());
-		userDTO.setAdmin(user.isAdmin());
-		userDTO.setToken(user.getToken());
-		return userDTO;
-	}
-
-	public List<UserDTO> convertIntoDTO(List<User> users) {
-		return users != null
-				? users.stream().map(this::convertIntoDTO).collect(Collectors.toList())
-				: null;
 	}
 
 	public User update(User user) {
