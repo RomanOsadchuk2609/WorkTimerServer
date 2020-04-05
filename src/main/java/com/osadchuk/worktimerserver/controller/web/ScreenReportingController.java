@@ -4,6 +4,7 @@ import com.osadchuk.worktimerserver.controller.util.ControllerUtil;
 import com.osadchuk.worktimerserver.model.dto.ScreenshotDTO;
 import com.osadchuk.worktimerserver.service.ScreenshotService;
 import com.osadchuk.worktimerserver.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,7 @@ import static com.osadchuk.worktimerserver.util.WorkTimerConstants.DATE_TIME_FOR
  */
 @Controller
 @RequestMapping("screenReporting")
+@Slf4j
 public class ScreenReportingController {
 	
 	private final ControllerUtil controllerUtil;
@@ -76,7 +78,6 @@ public class ScreenReportingController {
 		model.addAttribute("endTime", endDate);
 		if (!screenshotDTOList.isEmpty()) {
 			model.addAttribute("screenshotDTOList", screenshotDTOList);
-//			model.addAttribute("screenshotBase64", screenshotService.getBase64Screenshot(screenshotDTOList.get(0).getId()));
 		} else {
 			model.addAttribute("errorMessage", String.format("No screenshots for %s from %s to %s",
 					username, DATE_TIME_FORMATTER.format(startDateTime), DATE_TIME_FORMATTER.format(endDateTime)));

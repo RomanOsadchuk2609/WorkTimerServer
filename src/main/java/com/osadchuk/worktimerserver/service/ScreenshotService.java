@@ -5,13 +5,32 @@ import com.osadchuk.worktimerserver.model.dto.ScreenshotDTO;
 import com.osadchuk.worktimerserver.repository.ScreenshotRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static com.osadchuk.worktimerserver.util.WorkTimerConstants.DATE_TIME_FORMATTER;
+import static com.osadchuk.worktimerserver.util.WorkTimerConstants.SCREENSHOT_FILE_DATE_TIME_FORMATTER;
 
 /**
  * Service layer for operations with {@link Screenshot} entity
@@ -70,4 +89,46 @@ public class ScreenshotService implements CrudService<Screenshot>, DataTransferO
 				.map(Screenshot::getBase64)
 				.orElse(null);
 	}
+	
+	public Resource zipScreenshots(String fileName, String username, LocalDate startDate, LocalDate endDate) throws IOException {
+		LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+		LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
+		List<Screenshot> screenshotList = findAllByUsernameAndBetweenDates(username, startDateTime, endDateTime);
+		BASE64Decoder decoder = new BASE64Decoder();
+		try (final ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(fileName))) {
+			for (Screenshot screenshot : screenshotList) {
+				byte[] imageByte = decoder.decodeBuffer(screenshot.getBase64());
+				try (ByteArrayInputStream bis = new ByteArrayInputStream(imageByte)) {
+					BufferedImage bufferedImage = ImageIO.read(bis);
+					ZipEntry imageZipOutput = new ZipEntry(
+							username + "_" + screenshot.getDate().format(SCREENSHOT_FILE_DATE_TIME_FORMATTER) + ".png");
+					zipOut.putNextEntry(imageZipOutput);
+					ImageIO.write(bufferedImage, "PNG", zipOut);
+				}
+			}
+		}
+		try {
+			File file = new File(fileName);
+			Resource resource = new UrlResource(file.toURI());
+			if (resource.exists()) {
+				return resource;
+			} else {
+				throw new FileNotFoundException("File not found " + fileName);
+			}
+		} catch (MalformedURLException ex) {
+			throw new FileNotFoundException("File not found " + fileName);
+		}
+	}
+	
+	public void deleteScreenshotsArchive(String filename, int delay) {
+		Executors.newScheduledThreadPool(1).schedule(() -> {
+			try {
+				log.info("Deleting file {}", filename);
+				Files.delete(new File(filename).toPath());
+			} catch (IOException e) {
+				log.error("Failed to delete file {}", filename, e);
+			}
+		}, delay, TimeUnit.SECONDS);
+	}
+	
 }

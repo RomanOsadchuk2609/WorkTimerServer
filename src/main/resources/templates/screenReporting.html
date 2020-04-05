@@ -33,11 +33,11 @@
 </nav>
 <div class="container">
     <div class="row" style="padding-top: 25px">
-        <form action="/screenReporting/byUserAndDate" method="get" style="margin: auto">
+        <form action="/screenReporting/byUserAndDate" method="get" style="margin: auto;">
             <label for="user">User:</label>
             <select id="user" name="username">
                 <option name="username" th:each="u : ${users}" th:selected="${u.username == username}"
-                        th:text="${u.firstName + ' ' + u.lastName + ' ' + u.username}" th:value="${u.username}"></option>
+                        th:text="${u.firstName + ' ' + u.lastName}" th:value="${u.username}"></option>
             </select>
             <label for="startTime">From:</label>
             <input id="startTime" name="startTime" th:value="${startTime}" type="date"/>
@@ -45,6 +45,7 @@
             <input id="endTime" name="endTime" th:value="${endTime}" type="date"/>
             <input class="btn btn-success" type="submit" value="Load Screenshots"/>
         </form>
+        <button class="btn btn-outline-success" id="downloadScreenshotsButton">Download</button>
     </div>
     <div class="row" style="margin-top: 5px">
         <!--/*@thymesVar id="usersTime" type="List<com.osadchuk.worktimerserver.model.UserTime>"*/-->

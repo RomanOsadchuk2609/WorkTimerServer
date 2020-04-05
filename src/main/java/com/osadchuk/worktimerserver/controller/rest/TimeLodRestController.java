@@ -10,7 +10,6 @@ import com.osadchuk.worktimerserver.service.TaskService;
 import com.osadchuk.worktimerserver.service.TimeLogService;
 import com.osadchuk.worktimerserver.service.UserService;
 import com.osadchuk.worktimerserver.util.WorkTimerConstants;
-import com.osadchuk.worktimerserver.util.WorkTimerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,15 +31,18 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.util.Optional;
 
+import static com.osadchuk.worktimerserver.util.WorkTimerUtil.localDateTimeFromMillis;
+
 @RestController
 @RequestMapping("/time_log")
 @Slf4j
 public class TimeLodRestController {
+	
 	private final UserService userService;
 	private final TaskService taskService;
 	private final TimeLogService timeLogService;
 	private final ScreenshotService screenshotService;
-
+	
 	public TimeLodRestController(UserService userService,
 	                             TaskService taskService,
 	                             TimeLogService timeLogService,
@@ -90,7 +92,7 @@ public class TimeLodRestController {
 			timeLog.setUser(user.get());
 			Optional<Task> task = taskService.findById(taskId);
 			task.ifPresent(timeLog::setTask);
-			timeLog.setStartTime(WorkTimerUtil.localDateTimeFromMillis(startTime));
+			timeLog.setStartTime(localDateTimeFromMillis(startTime));
 			timeLog = timeLogService.save(timeLog);
 			return timeLogService.convertIntoDTO(timeLog);
 		} else {
@@ -107,7 +109,7 @@ public class TimeLodRestController {
 		Optional<TimeLog> optionalTimeLog = timeLogService.findById(timeLogId);
 		if (optionalTimeLog.isPresent()) {
 			TimeLog timeLog = optionalTimeLog.get();
-			timeLog.setEndTime(WorkTimerUtil.localDateTimeFromMillis(endTime));
+			timeLog.setEndTime(localDateTimeFromMillis(endTime));
 			timeLog = timeLogService.save(timeLog);
 			return timeLogService.convertIntoDTO(timeLog);
 		} else {
@@ -125,12 +127,12 @@ public class TimeLodRestController {
 		Optional<TimeLog> optionalTimeLog = timeLogService.findById(timeLogId);
 		if (optionalTimeLog.isPresent()) {
 			TimeLog timeLog = optionalTimeLog.get();
-			timeLog.setEndTime(WorkTimerUtil.localDateTimeFromMillis(date));
+			timeLog.setEndTime(localDateTimeFromMillis(date));
 			timeLog = timeLogService.save(timeLog);
 			Screenshot screenshot = new Screenshot();
 			screenshot.setBase64(base64ScreenShot);
 			screenshot.setTimeLog(timeLog);
-			screenshot.setDate(WorkTimerUtil.localDateTimeFromMillis(date));
+			screenshot.setDate(localDateTimeFromMillis(date));
 			return screenshotService.save(screenshot);
 		} else {
 			return null;
