@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
@@ -97,13 +98,15 @@ public class ScreenshotService implements CrudService<Screenshot>, DataTransferO
 		BASE64Decoder decoder = new BASE64Decoder();
 		try (final ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(fileName))) {
 			for (Screenshot screenshot : screenshotList) {
-				byte[] imageByte = decoder.decodeBuffer(screenshot.getBase64());
-				try (ByteArrayInputStream bis = new ByteArrayInputStream(imageByte)) {
-					BufferedImage bufferedImage = ImageIO.read(bis);
-					ZipEntry imageZipOutput = new ZipEntry(
-							username + "_" + screenshot.getDate().format(SCREENSHOT_FILE_DATE_TIME_FORMATTER) + ".png");
-					zipOut.putNextEntry(imageZipOutput);
-					ImageIO.write(bufferedImage, "PNG", zipOut);
+				if (!StringUtils.isEmpty(screenshot.getBase64())) {
+					byte[] imageByte = decoder.decodeBuffer(screenshot.getBase64());
+					try (ByteArrayInputStream bis = new ByteArrayInputStream(imageByte)) {
+						BufferedImage bufferedImage = ImageIO.read(bis);
+						ZipEntry imageZipOutput = new ZipEntry(
+								username + "_" + screenshot.getDate().format(SCREENSHOT_FILE_DATE_TIME_FORMATTER) + ".png");
+						zipOut.putNextEntry(imageZipOutput);
+						ImageIO.write(bufferedImage, "PNG", zipOut);
+					}
 				}
 			}
 		}
@@ -119,16 +122,6 @@ public class ScreenshotService implements CrudService<Screenshot>, DataTransferO
 			throw new FileNotFoundException("File not found " + fileName);
 		}
 	}
-	
-	public void deleteScreenshotsArchive(String filename, int delay) {
-		Executors.newScheduledThreadPool(1).schedule(() -> {
-			try {
-				log.info("Deleting file {}", filename);
-				Files.delete(new File(filename).toPath());
-			} catch (IOException e) {
-				log.error("Failed to delete file {}", filename, e);
-			}
-		}, delay, TimeUnit.SECONDS);
-	}
+
 	
 }

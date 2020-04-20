@@ -4,9 +4,10 @@
 
 package com.osadchuk.worktimerserver.controller.rest;
 
-import com.osadchuk.worktimerserver.service.ScreenshotService;
+import com.osadchuk.worktimerserver.service.TimeReportService;
 import com.osadchuk.worktimerserver.util.FileSystemUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -18,40 +19,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 
 import static com.osadchuk.worktimerserver.util.WorkTimerConstants.DATE_FORMATTER;
 
 @RestController
-@RequestMapping("/screenshot")
+@RequestMapping("/timeReport/")
 @Slf4j
-public class ScreenShotRestController {
-	
-	private final ScreenshotService screenshotService;
-	
+public class TimeReportRestController {
+
+	private final TimeReportService timeReportService;
+
 	@Autowired
-	public ScreenShotRestController(ScreenshotService screenshotService) {
-		this.screenshotService = screenshotService;
+	public TimeReportRestController(TimeReportService timeReportService) {
+		this.timeReportService = timeReportService;
 	}
-	
-	@GetMapping("/byId")
-	public String getScreenshotById(@RequestParam long id) {
-		return screenshotService.getBase64Screenshot(id);
-	}
-	
-	@GetMapping("/download")
-	public ResponseEntity<Resource> downloadFile(HttpServletRequest request,
-	                                             @RequestParam String username,
-	                                             @RequestParam String startTime,
-	                                             @RequestParam String endTime) throws IOException {
-		// Load file as Resource
-		String filename = username + "_screenshots_" + startTime + "_" + endTime + ".zip";
-		LocalDate startDate = LocalDate.parse(startTime, DATE_FORMATTER);
-		LocalDate endDate = LocalDate.parse(endTime, DATE_FORMATTER);
-		
-		Resource resource = screenshotService.zipScreenshots(filename, username, startDate, endDate);
-		
+
+	@GetMapping("/global/download")
+	public  ResponseEntity<Resource> downloadGlobalReport(HttpServletRequest request,
+	                                 @RequestParam String startDate,
+	                                 @RequestParam String endDate) throws FileNotFoundException {
+		LocalDate start = LocalDate.parse(startDate, DATE_FORMATTER);
+		LocalDate end = LocalDate.parse(endDate, DATE_FORMATTER);
+		Resource resource = timeReportService.createGlobalReport(start, end);
+
 		// Try to determine file's content type
 		String contentType = null;
 		try {
@@ -59,12 +52,12 @@ public class ScreenShotRestController {
 		} catch (IOException ex) {
 			log.info("Could not determine file type.");
 		}
-		
+
 		// Fallback to the default content type if type could not be determined
 		if (contentType == null) {
 			contentType = "application/octet-stream";
 		}
-		FileSystemUtil.deleteScreenshotsArchive(filename, 5);
+		FileSystemUtil.deleteScreenshotsArchive(resource.getFilename(), 5);
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(contentType))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")

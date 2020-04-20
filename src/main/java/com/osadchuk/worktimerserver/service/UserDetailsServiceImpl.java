@@ -47,7 +47,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					true,
 					getAuthoritiesByUser(user));
 		} else {
-			throw new UsernameNotFoundException("User not with username \"" + username + "\" found");
+			throw new UsernameNotFoundException("Userwith username \"" + username + "\" not  found");
 		}
 
 	}
