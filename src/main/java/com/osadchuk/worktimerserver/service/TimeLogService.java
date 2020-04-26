@@ -19,14 +19,14 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class TimeLogService implements CrudService<TimeLog>, DataTransferObjectService<TimeLog, TimeLogDTO> {
-	
+
 	private final TimeLogRepository timeLogRepository;
-	
+
 	@Autowired
 	public TimeLogService(TimeLogRepository timeLogRepository) {
 		this.timeLogRepository = timeLogRepository;
 	}
-	
+
 	@Override
 	public List<TimeLog> findAll() {
 		return timeLogRepository.findAll();
@@ -41,17 +41,17 @@ public class TimeLogService implements CrudService<TimeLog>, DataTransferObjectS
 	public TimeLog save(TimeLog entity) {
 		return timeLogRepository.save(entity);
 	}
-	
+
 	@Override
 	public void delete(TimeLog entity) {
 		timeLogRepository.delete(entity);
 	}
-	
+
 	@Override
 	public void deleteById(long id) {
 		timeLogRepository.deleteById(id);
 	}
-	
+
 	@Override
 	public TimeLogDTO convertIntoDTO(TimeLog timeLog) {
 		TimeLogDTO timeLogDTO = new TimeLogDTO();
@@ -69,7 +69,7 @@ public class TimeLogService implements CrudService<TimeLog>, DataTransferObjectS
 		return timeLogDTO
 				;
 	}
-	
+
 	public List<UserTime> getUsersLoggedTime(LocalDateTime startTime, LocalDateTime endTime) {
 		List<UserTime> usersTime = timeLogRepository.findUserTimeBetweenDates(startTime, endTime);
 		List<UserTime> transformedUserTime = new ArrayList<>();
@@ -84,5 +84,19 @@ public class TimeLogService implements CrudService<TimeLog>, DataTransferObjectS
 			}
 		}
 		return transformedUserTime;
+	}
+
+	public UserTime getUserLoggedTime(String username, LocalDateTime startTime, LocalDateTime endTime) {
+		return timeLogRepository.findUserTimeBetweenDates(username, startTime, endTime)
+				.stream()
+				.reduce((left, right) -> {
+					left.setLoggedSeconds(left.getLoggedSeconds() + right.getLoggedSeconds());
+					return left;
+				})
+				.orElse(null);
+	}
+
+	public List<TimeLog> getTimeLogByUsername(String username, LocalDateTime startTime, LocalDateTime endTime) {
+		return timeLogRepository.findTimeByUsernameBetweenDates(username, startTime, endTime);
 	}
 }

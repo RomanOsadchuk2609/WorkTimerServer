@@ -7,7 +7,6 @@ package com.osadchuk.worktimerserver.controller.rest;
 import com.osadchuk.worktimerserver.service.TimeReportService;
 import com.osadchuk.worktimerserver.util.FileSystemUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -38,13 +37,27 @@ public class TimeReportRestController {
 	}
 
 	@GetMapping("/global/download")
-	public  ResponseEntity<Resource> downloadGlobalReport(HttpServletRequest request,
-	                                 @RequestParam String startDate,
-	                                 @RequestParam String endDate) throws FileNotFoundException {
+	public ResponseEntity<Resource> downloadGlobalReport(HttpServletRequest request,
+	                                                     @RequestParam String startDate,
+	                                                     @RequestParam String endDate) throws FileNotFoundException {
 		LocalDate start = LocalDate.parse(startDate, DATE_FORMATTER);
 		LocalDate end = LocalDate.parse(endDate, DATE_FORMATTER);
 		Resource resource = timeReportService.createGlobalReport(start, end);
+		return downloadResource(request, resource);
+	}
 
+	@GetMapping("/detail/download")
+	public ResponseEntity<Resource> downloadGlobalReport(HttpServletRequest request,
+	                                                     @RequestParam String username,
+	                                                     @RequestParam String startDate,
+	                                                     @RequestParam String endDate) throws FileNotFoundException {
+		LocalDate start = LocalDate.parse(startDate, DATE_FORMATTER);
+		LocalDate end = LocalDate.parse(endDate, DATE_FORMATTER);
+		Resource resource = timeReportService.createDetailReport(username, start, end);
+		return downloadResource(request, resource);
+	}
+
+	private ResponseEntity<Resource> downloadResource(HttpServletRequest request, Resource resource) {
 		// Try to determine file's content type
 		String contentType = null;
 		try {

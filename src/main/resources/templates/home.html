@@ -34,17 +34,25 @@
 <div class="container">
     <div class="row" style="padding-top: 25px">
         <form action="/home/timeByDate" method="get" style="margin: auto">
+            <label for="user">User:</label>
+            <select id="user" name="username">
+                <option name="username" th:text="'All users'" th:value="'*'" th:selected="${'*' == username}"></option>
+                <option name="username" th:each="u : ${users}" th:selected="${u.username == username}"
+                        th:text="${u.firstName + ' ' + u.lastName}" th:value="${u.username}"></option>
+            </select>
             <label for="startTime">From:</label>
             <input id="startTime" name="startTime" th:value="${startTime}" type="date"/>
             <label>To:</label>
             <input id="endTime" name="endTime" th:value="${endTime}" type="date"/>
             <input class="btn btn-success" type="submit" value="Calculate"/>
         </form>
-        <button class="btn btn-outline-success" id="downloadReportButton">Download Report</button>
+        <button class="btn btn-outline-success" id="downloadGlobalReportButton">Download Global Report</button>
+        <button class="btn btn-outline-success" id="downloadDetailReportButton">Download Detail Report</button>
     </div>
     <div class="row" style="margin-top: 5px">
         <!--/*@thymesVar id="usersTime" type="List<com.osadchuk.worktimerserver.model.UserTime>"*/-->
-        <div class="alert alert-danger" role="alert" style="margin: auto" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+        <div class="alert alert-danger" role="alert" style="margin: auto" th:if="${errorMessage}"
+             th:text="${errorMessage}"></div>
         <table class="table table-striped" th:if="${usersTime != null && !usersTime.isEmpty()}">
             <thead class="bg-dark-green" style="color: white">
             <tr>

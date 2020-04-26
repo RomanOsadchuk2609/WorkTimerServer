@@ -20,4 +20,19 @@ public interface TimeLogRepository extends JpaRepository<TimeLog, Long> {
 			"FROM TimeLog AS timeLog WHERE timeLog.startTime >= :startTime AND timeLog.endTime <= :endTime " +
 			"ORDER BY timeLog.user.username")
 	List<UserTime> findUserTimeBetweenDates(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+
+	@Query("SELECT new com.osadchuk.worktimerserver.model.UserTime(timeLog.user, timeLog.startTime, timeLog.endTime) " +
+			"FROM TimeLog AS timeLog WHERE timeLog.user.username = :username AND " +
+			"timeLog.startTime >= :startTime AND timeLog.endTime <= :endTime " +
+			"ORDER BY timeLog.user.username")
+	List<UserTime> findUserTimeBetweenDates(@Param("username") String username,
+	                                        @Param("startTime") LocalDateTime startTime,
+	                                        @Param("endTime") LocalDateTime endTime);
+
+	@Query("SELECT timeLog FROM TimeLog AS timeLog WHERE timeLog.user.username = :username AND " +
+			"timeLog.startTime >= :startTime AND timeLog.endTime <= :endTime " +
+			"ORDER BY timeLog.startTime")
+	List<TimeLog> findTimeByUsernameBetweenDates(@Param("username") String username,
+	                                             @Param("startTime") LocalDateTime startTime,
+	                                             @Param("endTime") LocalDateTime endTime);
 }

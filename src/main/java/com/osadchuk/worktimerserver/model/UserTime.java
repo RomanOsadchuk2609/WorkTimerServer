@@ -19,6 +19,9 @@ public class UserTime {
 
 	private long loggedSeconds;
 
+	public UserTime() {
+	}
+
 	public UserTime(User user, LocalDateTime startTime, LocalDateTime endTime) {
 		this.userId = user.getId();
 		this.username = user.getUsername();
