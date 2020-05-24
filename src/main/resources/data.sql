@@ -26,3 +26,15 @@ WHERE NOT EXISTS(
 INSERT INTO public.task (id, name, description, user_id)
 VALUES (1, 'Time Logging', 'Default task for time logging of all users', NULL)
 ON CONFLICT DO NOTHING;
+
+INSERT INTO public.settings (id, name, value)
+VALUES (1, 'screenshotStorageTime', '90')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.settings (id, name, value)
+VALUES (2, 'appId', 'appId')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.settings (id, name, value)
+VALUES (3, 'appSecret', 'appSecret')
+ON CONFLICT DO NOTHING;

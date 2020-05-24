@@ -64,6 +64,7 @@ public class ScreenshotService implements CrudService<Screenshot>, DataTransferO
 	
 	@Override
 	public void delete(Screenshot entity) {
+		log.debug("Deleting screenshot created {}", entity.getDate());
 		screenshotRepository.delete(entity);
 	}
 	

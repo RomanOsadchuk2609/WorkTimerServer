@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
 	public UserDetailsServiceImpl(UserRepository userRepository) {

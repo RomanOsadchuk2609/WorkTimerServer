@@ -117,3 +117,18 @@ ALTER TABLE screenshot
 
 CREATE SEQUENCE IF NOT EXISTS screenshot_sequence START 1 INCREMENT 1;
 ALTER SEQUENCE screenshot_sequence OWNER TO worktimer;
+
+
+CREATE TABLE IF NOT EXISTS settings
+(
+    id    BIGINT  NOT NULL,
+    name  VARCHAR NOT NULL,
+    value VARCHAR NOT NULL,
+    CONSTRAINT settings_pkey PRIMARY KEY (id)
+);
+
+ALTER TABLE settings
+    OWNER TO worktimer;
+
+CREATE SEQUENCE IF NOT EXISTS settings_sequence START 4 INCREMENT 1;
+ALTER SEQUENCE settings_sequence OWNER TO worktimer;
