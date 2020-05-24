@@ -4,6 +4,7 @@ import com.osadchuk.worktimerserver.controller.util.ControllerUtil;
 import com.osadchuk.worktimerserver.model.UserTime;
 import com.osadchuk.worktimerserver.service.TimeLogService;
 import com.osadchuk.worktimerserver.service.UserService;
+import com.osadchuk.worktimerserver.util.UserDetailsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,7 +56,11 @@ public class HomeController {
 	public String home(@AuthenticationPrincipal UserDetails userDetails, Model model) {
 		controllerUtil.fillModelWithUser(userDetails, model);
 		LocalDate now = LocalDate.now();
-		fillModelWithLoggedTime(ALL_USERS, now, now, model);
+		if (UserDetailsUtil.isAdmin(userDetails)) {
+			fillModelWithLoggedTime(ALL_USERS, now, now, model);
+		} else {
+			fillModelWithLoggedTime(userDetails.getUsername(), now, now, model);
+		}
 		return "home";
 	}
 
