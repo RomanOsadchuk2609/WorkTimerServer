@@ -27,8 +27,9 @@ public class WorkTimerConstants {
 	public static final class ApplicationSettings {
 
 		public static final String SCREENSHOT_STORAGE_TIME = "screenshotStorageTime";
-		public static final String APP_ID = "appId";
-		public static final String APP_SECRET = "appSecret";
+		public static final String TWILIO_ACCOUNT_SID = "TwilioAccountSID";
+		public static final String TWILIO_AUTH_TOKEN = "TwilioAuthToken";
+		public static final String TWILIO_PHONE_NUMBER = "TwilioPhoneNumber";
 
 		private ApplicationSettings() {
 		}

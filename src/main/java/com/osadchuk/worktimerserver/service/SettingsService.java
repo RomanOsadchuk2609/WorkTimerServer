@@ -74,11 +74,17 @@ public class SettingsService implements CrudService<Settings> {
 	public ApplicationSettings getAsApplicationSettingsModel() {
 		ApplicationSettings applicationSettings = new ApplicationSettings();
 		applicationSettings.setScreenshotStorageTime(Integer.parseInt(findValueByName(WorkTimerConstants.ApplicationSettings.SCREENSHOT_STORAGE_TIME)));
+		applicationSettings.setTwilioAccountSID(findValueByName(WorkTimerConstants.ApplicationSettings.TWILIO_ACCOUNT_SID));
+		applicationSettings.setTwilioAuthToken(findValueByName(WorkTimerConstants.ApplicationSettings.TWILIO_AUTH_TOKEN));
+		applicationSettings.setTwilioPhoneNumber(findValueByName(WorkTimerConstants.ApplicationSettings.TWILIO_PHONE_NUMBER));
 		return applicationSettings;
 	}
 
 	public ApplicationSettings save(ApplicationSettings applicationSettings) {
 		saveValueByName(WorkTimerConstants.ApplicationSettings.SCREENSHOT_STORAGE_TIME, String.valueOf(applicationSettings.getScreenshotStorageTime()));
+		saveValueByName(WorkTimerConstants.ApplicationSettings.TWILIO_ACCOUNT_SID, applicationSettings.getTwilioAccountSID());
+		saveValueByName(WorkTimerConstants.ApplicationSettings.TWILIO_AUTH_TOKEN, applicationSettings.getTwilioAuthToken());
+		saveValueByName(WorkTimerConstants.ApplicationSettings.TWILIO_PHONE_NUMBER, applicationSettings.getTwilioPhoneNumber());
 		return getAsApplicationSettingsModel();
 	}
 }

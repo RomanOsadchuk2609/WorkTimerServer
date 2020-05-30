@@ -12,4 +12,10 @@ import lombok.Data;
 @Data
 public class ApplicationSettings {
 	private int screenshotStorageTime;
+
+	private String twilioAccountSID;
+
+	private String twilioAuthToken;
+
+	private String twilioPhoneNumber;
 }

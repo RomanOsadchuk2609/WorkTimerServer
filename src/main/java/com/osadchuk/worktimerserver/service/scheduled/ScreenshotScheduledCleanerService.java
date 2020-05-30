@@ -39,7 +39,7 @@ public class ScreenshotScheduledCleanerService {
 		log.debug("Started deleting screenshots created more then {} days ago.", maxStorageDays);
 		screenshotService.findAll()
 				.stream()
-				.filter(screenshot -> Duration.between(screenshot. getDate(), LocalDateTime.now()).toDays() >= maxStorageDays)
+				.filter(screenshot -> Duration.between(screenshot.getDate(), LocalDateTime.now()).toDays() >= maxStorageDays)
 				.forEach(screenshotService::delete);
 		log.debug("Finished deleting screenshots created more then {} days ago.", maxStorageDays);
 	}

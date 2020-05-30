@@ -32,9 +32,13 @@ VALUES (1, 'screenshotStorageTime', '90')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.settings (id, name, value)
-VALUES (2, 'appId', 'appId')
+VALUES (2, 'TwilioAccountSID', 'appId')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.settings (id, name, value)
-VALUES (3, 'appSecret', 'appSecret')
+VALUES (3, 'TwilioAuthToken', 'appSecret')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.settings (id, name, value)
+VALUES (4, 'TwilioPhoneNumber', '+123456789')
 ON CONFLICT DO NOTHING;

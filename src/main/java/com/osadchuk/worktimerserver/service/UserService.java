@@ -170,4 +170,15 @@ public class UserService implements CrudService<User>, DataTransferObjectService
 		}
 		return newUser;
 	}
+
+
+	public Optional<User> disableUser(String username) {
+		User user = findByUsername(username).get();
+		if (user != null) {
+			user.setEnabled(false);
+			user.setToken(PasswordGenerator.generatePassword(8));
+			user = userRepository.save(user);
+		}
+		return Optional.ofNullable(user);
+	}
 }

@@ -28,7 +28,7 @@ import java.util.Date;
 @Slf4j
 public class TimerRestController {
 
-	private static long start = 0;
+	/*private static long start = 0;
 
 	@PostMapping("/login")
 	public String login(@RequestParam(value = "authToken") String authTokenBase64) {
@@ -89,28 +89,28 @@ public class TimerRestController {
 	                           @RequestParam(value = "date") long date) throws IOException {
 		log.debug("Screenshot:{}", base64ScreenShot);
 //		System.out.println(base64ScreenShot);
-		/*String str = base64ScreenShot;pg
+		*//*String str = base64ScreenShot;pg
 		byte[] base64Val;
 		BASE64Decoder decoder = new BASE64Decoder();
 		base64Val = decoder.decodeBuffer(base64ScreenShot);
 		ByteArrayInputStream bis = new ByteArrayInputStream(base64Val);
 
-		*//*Date currentDate = new Date();
+		*//**//*Date currentDate = new Date();
 		currentDate.setTime(date);
 		Timer timer = timerService.findOne(timerId);
 		timer.setEndtime(currentDate);
-		Timer saved = timerService.save(timer);*//*
+		Timer saved = timerService.save(timer);*//**//*
 
 		writeScreenshotIntoFile(bis, timerId, date);
 		//new SaveScreenShotThread(bis,timerId,date).start();
 
-		bis.close();*/
+		bis.close();*//*
 	}
 
 
 	private void writeScreenshotIntoFile(InputStream img, long timerId, long date) {
 		//Timer timer = timerService.findOne(timerId);
-		/*long performerId = timerService.findPerformerIdByTimerId(timerId);
+		*//*long performerId = timerService.findPerformerIdByTimerId(timerId);
 		long taskId = performerService.findTaskIdByPerformerId(performerId);
 		long projectId = taskService.findProjectIdByTaskId(taskId);
 		String username = timerService.findUsernameByTimerId(timerId);
@@ -120,9 +120,9 @@ public class TimerRestController {
 		String simpleDate = dateFormat.format(screenshotDate);
 		String fileName ="taskId_"+taskId+"_timerId_"+timerId+"_"+username+"_"+simpleDate+".jpg";
 		screenshotStorageService.store(img, projectId, taskId, fileName);
-*/
+*//*
 
-	}
+	}*/
 
 
 }

@@ -14,7 +14,7 @@
 
             <div th:if="${errorMessage}" class="alert alert-danger" role="alert"
                  th:text="${errorMessage}"></div>
-            <h3 th:if="${userDTO}" th:text="'User Registartion | ' + ${userDTO.username}"></h3>
+            <h3 th:if="${userDTO}" th:text="'Login Via Invite Token | ' + ${userDTO.username}"></h3>
             <form th:if="${userDTO}" align="left" action="/login/token" th:object="${userDTO}" th:name="userDTO" method="POST">
                 <fieldset>
 
@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Register"/>
+                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Update Password"/>
                     </div>
                 </fieldset>
             </form>

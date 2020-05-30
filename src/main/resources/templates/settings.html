@@ -13,7 +13,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/home">Home</a>
             </li>
-            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+            <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                 <a class="nav-link" href="/users">Users</a>
             </li>
             <!--<li class="nav-item">
@@ -46,6 +46,24 @@
                         <input id="screenshotStorageTime" type="number" min="1" class="form-control input-lg" th:field="*{screenshotStorageTime}"
                                placeholder="Amount Of Days" required="required"/>
                         <p th:each="error: ${#fields.errors('screenshotStorageTime')}"
+                           th:text="${error}">Validation error</p>
+
+                        <label for="twilioAccountSID">Twilio Account SID</label>
+                        <input id="twilioAccountSID" type="text" min="1" class="form-control input-lg" th:field="*{twilioAccountSID}"
+                               placeholder="Twilio Account SID" required="required"/>
+                        <p th:each="error: ${#fields.errors('twilioAccountSID')}"
+                           th:text="${error}">Validation error</p>
+
+                        <label for="twilioAuthToken">Twilio Auth Token</label>
+                        <input id="twilioAuthToken" type="text" min="1" class="form-control input-lg" th:field="*{twilioAuthToken}"
+                               placeholder="Twilio Auth Token" required="required"/>
+                        <p th:each="error: ${#fields.errors('twilioAuthToken')}"
+                           th:text="${error}">Validation error</p>
+
+                        <label for="twilioPhoneNumber">Twilio Phone Number</label>
+                        <input id="twilioPhoneNumber" type="text" min="1" class="form-control input-lg" th:field="*{twilioPhoneNumber}"
+                               placeholder="Twilio Phone Number" required="required"/>
+                        <p th:each="error: ${#fields.errors('twilioPhoneNumber')}"
                            th:text="${error}">Validation error</p>
                     </div>
 

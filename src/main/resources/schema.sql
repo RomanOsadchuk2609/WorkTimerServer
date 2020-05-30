@@ -130,5 +130,5 @@ CREATE TABLE IF NOT EXISTS settings
 ALTER TABLE settings
     OWNER TO worktimer;
 
-CREATE SEQUENCE IF NOT EXISTS settings_sequence START 4 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS settings_sequence START 5 INCREMENT 1;
 ALTER SEQUENCE settings_sequence OWNER TO worktimer;
