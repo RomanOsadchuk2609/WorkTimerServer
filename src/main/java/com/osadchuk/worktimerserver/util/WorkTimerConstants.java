@@ -17,6 +17,7 @@ public class WorkTimerConstants {
 
 	public static final class Role {
 
+		public static final String APP_ADMIN = "APP_ADMIN";
 		public static final String ADMIN = "ADMIN";
 		public static final String USER = "USER";
 

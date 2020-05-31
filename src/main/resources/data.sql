@@ -1,9 +1,13 @@
 INSERT INTO public.role (id, description, name)
-VALUES (1, 'Admin', 'ADMIN')
+VALUES (1, 'Application Administrator', 'APP_ADMIN')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.role (id, description, name)
-VALUES (2, 'User', 'USER')
+VALUES (2, 'Administrator', 'ADMIN')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.role (id, description, name)
+VALUES (3, 'User', 'USER')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public."user"(id, username, first_name, last_name, enabled, password, phone_number)
@@ -21,6 +25,12 @@ INSERT INTO public.users_roles (user_id, role_id)
 SELECT 1 as "user_id", 2 as "role_id"
 WHERE NOT EXISTS(
         SELECT user_id FROM public.users_roles WHERE user_id = 1 and role_id = 2
+    );
+
+INSERT INTO public.users_roles (user_id, role_id)
+SELECT 1 as "user_id", 3 as "role_id"
+WHERE NOT EXISTS(
+        SELECT user_id FROM public.users_roles WHERE user_id = 1 and role_id = 3
     );
 
 INSERT INTO public.task (id, name, description, user_id)

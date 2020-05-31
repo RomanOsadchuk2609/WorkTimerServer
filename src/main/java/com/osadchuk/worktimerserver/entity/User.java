@@ -77,7 +77,15 @@ public class User {
 	public boolean isAdmin() {
 		return roles.stream()
 				.map(Role::getName)
-				.anyMatch(WorkTimerConstants.Role.ADMIN::equalsIgnoreCase);
+				.anyMatch(WorkTimerConstants.Role.ADMIN::equalsIgnoreCase)
+				|| isAppAdmin();
+	}
+
+	@JsonIgnore
+	public boolean isAppAdmin() {
+		return roles.stream()
+				.map(Role::getName)
+				.anyMatch(WorkTimerConstants.Role.APP_ADMIN::equalsIgnoreCase);
 	}
 
 	@Override

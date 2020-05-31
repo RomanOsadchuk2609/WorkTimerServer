@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS public.role
 ALTER TABLE public.role
     OWNER TO worktimer;
 
-CREATE SEQUENCE IF NOT EXISTS role_sequence START 3 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS role_sequence START 4 INCREMENT 1;
 ALTER SEQUENCE role_sequence OWNER TO worktimer;
 
 

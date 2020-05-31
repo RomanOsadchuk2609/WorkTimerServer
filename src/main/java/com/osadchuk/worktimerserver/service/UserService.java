@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.osadchuk.worktimerserver.util.WorkTimerConstants.Role.ADMIN;
+import static com.osadchuk.worktimerserver.util.WorkTimerConstants.Role.APP_ADMIN;
 import static com.osadchuk.worktimerserver.util.WorkTimerConstants.Role.USER;
 
 /**
@@ -56,8 +57,10 @@ public class UserService implements CrudService<User>, DataTransferObjectService
 	}
 	
 	@Override
-	public void delete(User entity) {
-		userRepository.delete(entity);
+	public void delete(User user) {
+		if (!user.isAppAdmin()) {
+			userRepository.delete(user);
+		}
 	}
 	
 	@Override
@@ -74,17 +77,22 @@ public class UserService implements CrudService<User>, DataTransferObjectService
 		userDTO.setPhoneNumber(user.getPhoneNumber());
 		userDTO.setAdmin(user.isAdmin());
 		userDTO.setToken(user.getToken());
+		userDTO.setEnable(user.isEnabled());
 		return userDTO;
 	}
-	
+
+	public List<User> findAllOrderByUsername() {
+		return userRepository.findAllByOrderByUsername();
+	}
+
 	public Optional<User> findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
-	
+
 	public Optional<User> findByToken(String token) {
 		return userRepository.findByToken(token);
 	}
-	
+
 	public List<User> findAllByContainingFilterIgnoreCase(String filter) {
 		List<User> usersByUsername = userRepository.findAllByUsernameContainingIgnoreCase(filter);
 		List<User> usersByFirstName = userRepository.findAllByFirstNameContainingIgnoreCase(filter);
@@ -171,14 +179,64 @@ public class UserService implements CrudService<User>, DataTransferObjectService
 		return newUser;
 	}
 
-
 	public Optional<User> disableUser(String username) {
-		User user = findByUsername(username).get();
-		if (user != null) {
+		Optional<User> optionalUser = findByUsername(username);
+		if (optionalUser.isPresent() && !optionalUser.get().isAppAdmin()) {
+			User user = optionalUser.get();
 			user.setEnabled(false);
 			user.setToken(PasswordGenerator.generatePassword(8));
 			user = userRepository.save(user);
+			return Optional.of(user);
 		}
-		return Optional.ofNullable(user);
+		return optionalUser;
+	}
+
+	public Optional<User> disableUserWithoutToken(String username) {
+		Optional<User> optionalUser = findByUsername(username);
+		if (optionalUser.isPresent() && !optionalUser.get().isAppAdmin()) {
+			User user = optionalUser.get();
+			user.setEnabled(false);
+			user.setToken(Strings.EMPTY);
+			user = userRepository.save(user);
+			return Optional.of(user);
+		}
+		return optionalUser;
+	}
+
+	public Optional<User> enableUser(String username) {
+		Optional<User> optionalUser = findByUsername(username);
+		if (optionalUser.isPresent()) {
+			User user = optionalUser.get();
+			user.setEnabled(true);
+			user = userRepository.save(user);
+			return Optional.of(user);
+		}
+		return optionalUser;
+	}
+
+	public Optional<User> grantAdminAuthorities(String username) {
+		Optional<User> optionalUser = findByUsername(username);
+		if (optionalUser.isPresent()) {
+			User user = optionalUser.get();
+			user.getRoles().add(roleRepository.findByName(ADMIN));
+			user = userRepository.save(user);
+			return Optional.of(user);
+		}
+		return optionalUser;
+	}
+
+	public Optional<User> removeAdminAuthorities(String username) {
+		Optional<User> optionalUser = findByUsername(username);
+		if (optionalUser.isPresent() && !optionalUser.get().isAppAdmin()) {
+			User user = optionalUser.get();
+			user.getRoles().remove(roleRepository.findByName(ADMIN));
+			user = userRepository.save(user);
+			return Optional.of(user);
+		}
+		return optionalUser;
+	}
+
+	public void deleteByUsername(String username) {
+		findByUsername(username).ifPresent(this::delete);
 	}
 }

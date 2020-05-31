@@ -40,6 +40,8 @@ public class UserDTO {
 
 	private boolean isAdmin;
 
+	private boolean enable;
+
 	private String token;
 
 	private String error;

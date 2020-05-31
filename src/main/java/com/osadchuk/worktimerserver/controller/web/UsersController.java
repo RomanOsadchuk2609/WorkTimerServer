@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -30,6 +29,8 @@ import java.util.List;
 @RequestMapping("/users")
 @Slf4j
 public class UsersController {
+
+	private static final String ALL_USERS = "*";
 
 	private final ControllerUtil controllerUtil;
 
@@ -55,8 +56,13 @@ public class UsersController {
 	                        @RequestParam String filter,
 	                        Model model) {
 		controllerUtil.fillModelWithUser(userDetails, model);
-		if (!StringUtils.isEmptyOrWhitespace(filter)) {
-			List<User> foundUsers = userService.findAllByContainingFilterIgnoreCase(filter);
+		if (Strings.isNotBlank(filter)) {
+			List<User> foundUsers;
+			if (ALL_USERS.equals(filter)) {
+				foundUsers = userService.findAllOrderByUsername();
+			} else {
+				foundUsers = userService.findAllByContainingFilterIgnoreCase(filter);
+			}
 			model.addAttribute("foundUsers", userService.convertIntoDTO(foundUsers));
 		}
 		return "fragments/usersFragments :: foundUsers";
