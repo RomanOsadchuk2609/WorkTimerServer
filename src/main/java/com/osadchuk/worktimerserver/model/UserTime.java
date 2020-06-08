@@ -36,7 +36,7 @@ public class UserTime {
 		long seconds = duration.getSeconds();
 		if (hours > 0) {
 			minutes -= hours * 60;
-			seconds -= minutes * 60;
+			seconds -= minutes * 60 + hours * 60 * 60;
 			return String.format("%sh %sm %ss", hours, minutes, seconds);
 		} else if (minutes > 0) {
 			seconds -= minutes * 60;

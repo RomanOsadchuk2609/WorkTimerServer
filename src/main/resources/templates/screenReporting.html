@@ -20,12 +20,12 @@
                 <a class="nav-link" href="#">Tasks</a>
             </li>-->
             <li class="nav-item active">
-                <a class="nav-link" href="/screenReporting">Screen Reporting</a>
+                <a class="nav-link" href="/screenReporting" sec:authorize="hasAuthority('ADMIN')">Screen Reporting</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/profile">Profile</a>
             </li>
-            <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+            <li class="nav-item" sec:authorize="hasAuthority('APP_ADMIN')">
                 <a class="nav-link" href="/settings">Settings</a>
             </li>
             <li class="nav-item">

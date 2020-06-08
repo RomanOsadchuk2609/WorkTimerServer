@@ -50,9 +50,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 				.authorizeRequests()
-				.antMatchers("/managers/status/check", "/admin/**").hasAuthority("ADMIN")
-				.antMatchers("/users/status/check").hasRole("USER")
-				.antMatchers("/registration", "/forgotPassword", "/public/**", "/css/**", "/js/**", "/img/**", "/test", "/time_log/login", "/login/token").permitAll()
+				.antMatchers( "/home/**", "/profile/**").hasAuthority("USER")
+				.antMatchers("/users/**", "/screenReporting/**").hasAuthority("ADMIN")
+				.antMatchers("/settings/**").hasAuthority("APP_ADMIN")
+				.antMatchers("/registration", "/forgotPassword", "/public/**", "/css/**", "/js/**", "/img/**", "/time_log/login", "/login","/login/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()

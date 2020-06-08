@@ -40,11 +40,11 @@
                     <div class="form-group">
                         <input type="submit" class="btn btn-lg btn-success btn-block" value="Login"/>
                     </div>
-                    <!--<div class="form-group">
-                        <a href="/forgotPassword" class="btn btn-lg btn-outline-success btn-block">Forgot Password?</a>
-                    </div>-->
                 </fieldset>
             </form>
+            <div align="center" style="margin-bottom: 5px">
+                <a th:href="@{/forgotPassword}" style="color: #346711">Forgot Password?</a>
+            </div>
             <input id="token" type="text" class="form-control" placeholder="Token" style="margin-bottom: 5px"/>
             <button id="btnTokenLogin" class="btn btn-lg btn-secondary btn-block">Login Via Invite Token</button>
         </div>

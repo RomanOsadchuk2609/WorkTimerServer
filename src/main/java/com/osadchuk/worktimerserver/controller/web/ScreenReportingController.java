@@ -27,7 +27,7 @@ import static com.osadchuk.worktimerserver.util.WorkTimerConstants.DATE_TIME_FOR
  * Controller for home page
  */
 @Controller
-@RequestMapping("screenReporting")
+@RequestMapping("/screenReporting")
 @Slf4j
 public class ScreenReportingController {
 	
